@@ -1,0 +1,11 @@
+[Unit]
+# Records the health verdict to the journal every 30 min.
+# Every failure this project had was silent; this makes them greppable.
+Description=HydroLoRaPi health check
+
+[Service]
+Type=oneshot
+# SuccessExitStatus so a WARN/FAIL verdict is recorded without systemd
+# marking the unit failed and rate-limiting it away.
+SuccessExitStatus=0 1 2
+ExecStart=/usr/bin/python3 /home/pi/healthcheck.py

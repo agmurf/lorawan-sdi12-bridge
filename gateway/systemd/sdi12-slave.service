@@ -1,0 +1,33 @@
+[Unit]
+# SDI-12 slave: answers the ELPRO ERT-A2's polls with the latest river
+# level, so it can be retransmitted as ALERT2 sensor ID 7.
+#
+# Runs as root for two reasons: nice -10 needs CAP_SYS_NICE, and the
+# process must outlive any login session. It deliberately does NOT use
+# SCHED_FIFO -- pigpiod does the bit-bang timing in DMA, and outranking
+# it measurably WORSENS latency (1.83 ms vs 0.58 ms worst case).
+Description=SDI-12 slave (river level to ERT-A2)
+Documentation=file:///home/pi/sdi12_slave.py
+After=pigpiod.service
+Requires=pigpiod.service
+
+# The field site is unattended, so never give up. Same reasoning as the
+# ttn-gateway drop-in: retrying forever beats a silent gauge. This key
+# belongs in [Unit], not [Service] -- systemd ignores it there.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/pi
+ExecStart=/usr/bin/python3 -u /home/pi/sdi12_run.py 0
+
+Restart=always
+RestartSec=5
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sdi12
+
+[Install]
+WantedBy=multi-user.target

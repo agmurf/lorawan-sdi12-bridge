@@ -1,0 +1,16 @@
+# KEY MATERIAL -- never commit. An AppKey impersonates the sensor.
+device_keys.json
+*.key
+*.pem
+secrets*
+.ert_last_screen
+
+# Run artefacts
+rxstats.log
+soak_log*.csv
+sdi12_served.csv
+*.log
+
+__pycache__/
+*.pyc
+.venv/

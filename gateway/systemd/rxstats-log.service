@@ -1,0 +1,7 @@
+[Unit]
+# Snapshot EM411 reception stats into a persistent file.
+Description=Snapshot EM411 reception statistics
+
+[Service]
+Type=oneshot
+ExecStart=/home/pi/rxstats_snapshot.sh

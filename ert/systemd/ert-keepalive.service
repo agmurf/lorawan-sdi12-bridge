@@ -1,0 +1,18 @@
+[Unit]
+# Holds the ERT-A2 Engineer session open during the protocol soak.
+#
+# The console idles out, and an eight-hour test cannot depend on one
+# login lasting. A bare CR at the Main Menu redraws it and resets the
+# idle timer.
+#
+# Safe to leave enabled permanently: ert.py --keepalive refuses unless
+# the screen is unmistakably the Main Menu, and stands off entirely while
+# /run/ert-active.lock is fresh, so it can never fire into the middle of
+# a reconfiguration.
+Description=Hold the ERT-A2 console session open
+
+[Service]
+Type=oneshot
+SuccessExitStatus=0 1 2
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/ert.py --keepalive

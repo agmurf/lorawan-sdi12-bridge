@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the HydroLoRaPi health check every 30 min
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=30min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
