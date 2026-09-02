@@ -25,7 +25,7 @@ ALERT network.
 
 | Part | Role | Notes |
 |---|---|---|
-| **Milesight EM411-RDL** | radar river level sensor | LoRaWAN AS923, OTAA; reports distance to water |
+| **Milesight EM411-RDL** | radar river level sensor | LoRaWAN AS923, provisioned **ABP**; reports distance to water |
 | **RAK2245 Pi HAT** | LoRa concentrator | SX1301 baseband + 2x SX1257 radios, 8 multi-SF channels |
 | **Raspberry Pi Zero 2 W** | gateway host | packet forwarder, network server, decoder and SDI-12 slave |
 | **RAK6421 WisMesh Pi HAT** | WisBlock carrier on the Pi | modular LoRa / WisBlock expansion; carries the SDI-12 module |
@@ -112,14 +112,27 @@ concealed the very fault it should have exposed.**
 
 ---
 
-## Keys
+## Keys and provisioning
 
-There are none in this repository. The working gateway loads them from
-`device_keys.json` (chmod 600, gitignored). `local_ns_logger.py` here has
-its key literals and device identifiers replaced with placeholders.
+The sensors are provisioned **ABP** (Activation By Personalisation). Each
+device's `DevAddr`, `NwkSKey` and `AppSKey` are entered on the gateway
+directly, so the private network server validates the MIC and decrypts the
+payload with keys it already holds -- no join exchange, and no dependency on
+any network server upstream. That is the point: a join needs infrastructure
+to answer it, and this path exists for when the infrastructure is down.
 
-If you deploy this, keep keys out of source. An `AppKey` is enough to
-impersonate the sensor it belongs to.
+`local_ns_logger.py` also carries an OTAA join handler, but it is **off by
+default** (`OTAA_ANSWER_JOINS=0`). Answering a JoinRequest re-keys the device
+onto this network and stops it reporting to whichever network it was joined
+to, so it is only ever enabled for a device that is ours exclusively.
+
+There is no key material in this repository. The working gateway loads it
+from `device_keys.json` (chmod 600, gitignored); the copy of
+`local_ns_logger.py` here has its key literals and device identifiers
+replaced with placeholders.
+
+If you deploy this, keep keys out of source. A session key pair is enough to
+read the sensor; an `AppKey` is enough to impersonate it.
 
 ---
 
