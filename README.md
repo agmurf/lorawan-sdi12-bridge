@@ -25,12 +25,12 @@ ALERT network.
 
 | Part | Role | Notes |
 |---|---|---|
-| **Milesight EM411-RDL** | radar river level sensor | LoRaWAN AS923, OTAA. 80 mm radar, reports distance to water |
+| **Milesight EM411-RDL** | radar river level sensor | LoRaWAN AS923, OTAA; reports distance to water |
 | **RAK2245 Pi HAT** | LoRa concentrator | SX1301 baseband + 2x SX1257 radios, 8 multi-SF channels |
-| **Raspberry Pi Zero 2 W** | gateway host | runs the packet forwarder, network server, decoder and SDI-12 slave |
-| **Raspberry Pi 4** | console host | drives the ERT-A2 over USB CDC-ACM (`/dev/ttyACM0`) |
+| **Raspberry Pi Zero 2 W** | gateway host | packet forwarder, network server, decoder and SDI-12 slave |
+| **RAK6421 WisMesh Pi HAT** | WisBlock carrier on the Pi | modular LoRa / WisBlock expansion; carries the SDI-12 module |
+| **RAK13010 WisBlock SDI-12 Interface** | SDI-12 bus to the ERT-A2 | 1200 baud 7E1; bus timing driven from the Pi (`sdi12_pigpio.py`) |
 | **ELPRO ERT-A2** | ALERT field station | firmware v1.7, hardware Rev4.A, Tx 151.5 MHz at 5 W |
-| SDI-12 interface | gateway to ERT-A2 | bit-banged on GPIO via `pigpio`, 1200 baud 7E1 |
 
 ### Sensor geometry
 
@@ -89,7 +89,6 @@ update silently restores the stock plan.
 | `gateway/healthcheck.py` | 14 checks, one verdict, exit 0/1/2 |
 | `gateway/rxstats.py` | reception measured **by frame counter**, never wall-clock |
 | `gateway/sdi12_export.py` | exports what was actually served, as CSV, for correlation |
-| `ert/ert.py` | ERT-A2 console driver with a credential guard |
 | `ert/ert_login.py` | interactive login; refuses to run without a TTY |
 | `ert/diagnostics/echo_test.py` | proves the console drops burst serial input |
 
