@@ -89,8 +89,6 @@ update silently restores the stock plan.
 | `gateway/healthcheck.py` | 14 checks, one verdict, exit 0/1/2 |
 | `gateway/rxstats.py` | reception measured **by frame counter**, never wall-clock |
 | `gateway/sdi12_export.py` | exports what was actually served, as CSV, for correlation |
-| `ert/ert_login.py` | interactive login; refuses to run without a TTY |
-| `ert/diagnostics/echo_test.py` | proves the console drops burst serial input |
 
 ### Measure by frame counter, not by clock
 

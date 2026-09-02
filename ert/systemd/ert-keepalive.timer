@@ -1,9 +1,0 @@
-[Unit]
-Description=ERT-A2 console keepalive every 5 min
-
-[Timer]
-OnBootSec=3min
-OnUnitActiveSec=5min
-
-[Install]
-WantedBy=timers.target
